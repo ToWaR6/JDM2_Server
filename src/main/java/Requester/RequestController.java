@@ -86,17 +86,17 @@ public class RequestController {
 	}
 
 	@RequestMapping("/diko")
-	public static Mot request(@RequestParam(value="q") String mot) {
+	public static Mot request(@RequestParam(value="mot") String mot) {
 		return getWord(mot);
 	}
 
 	@RequestMapping("/diko/relation")
-	public static ArrayList<Voisin> requestRelation(@RequestParam(value="q") String mot, @RequestParam(value="r") String relation) throws Exception {
+	public static ArrayList<Voisin> requestRelation(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation) throws Exception {
 		return getWord(mot).getRelations_sortantes(relation);
 	}
 
 	@RequestMapping("/diko/word")
-	public static ArrayList<String> requestWord(@RequestParam(value="q") String begin) throws Exception {
+	public static ArrayList<String> requestWord(@RequestParam(value="begin") String begin) throws Exception {
 		ArrayList<String> list = new ArrayList<String>();
 		boolean b = false;
 		for (String str : mapWord.get(begin.charAt(0))) {
