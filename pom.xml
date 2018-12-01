@@ -28,6 +28,15 @@
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
+         <dependency>
+            <groupId>org.rezo</groupId>
+            <artifactId>RequeterRezo</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/RequeterRezo/RequeterRezo.jar</systemPath>
+            <type>jar</type>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -40,6 +49,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                    <executable>true</executable>
+                </configuration>
             </plugin>
         </plugins>
     </build>
