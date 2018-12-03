@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
 
 import javax.annotation.PreDestroy;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +23,7 @@ import requeterRezo.Mot;
 import requeterRezo.RequeterRezoDump;
 import requeterRezo.Voisin;
 
+@CrossOrigin
 @RestController
 public class RequestController {
 
