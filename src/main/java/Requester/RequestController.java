@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeSet;
 
 import javax.annotation.PreDestroy;
@@ -98,7 +99,7 @@ public class RequestController {
 	}
 
 	@RequestMapping("/diko/word")
-	public static ArrayList<String> requestWord(@RequestParam(value="begin") String begin) throws Exception {
+	public static List<String> requestWord(@RequestParam(value="begin") String begin) throws Exception {
 		ArrayList<String> list = new ArrayList<String>();
 		boolean b = false;
 		for (String str : mapWord.get(begin.charAt(0))) {
@@ -108,8 +109,8 @@ public class RequestController {
 			} else if (b) {
 				break;
 			}	
-		}	
-		return list;
+		}
+		return list.subList(0, 25);
 	}
 	
 }
