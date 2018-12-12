@@ -113,4 +113,14 @@ public class RequestController {
 		return list.subList(0, 25);
 	}
 	
+	@RequestMapping("/diko/definition")
+	public static String requestDescription(@RequestParam(value="mot") String mot) {
+		Mot word = getWord(mot);
+		String def = word.getDefinition();
+		if (def.startsWith("Pas de définition")) {
+			return word.getRelations_sortantes("r_raff_sem").toString();
+		} else {
+			return def;
+		}
+	}
 }
