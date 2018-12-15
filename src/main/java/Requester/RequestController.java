@@ -6,8 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import requeterRezo.Mot;
 import requeterRezo.RequeterRezoDump;
@@ -73,29 +70,15 @@ public class RequestController {
 	public static void cleanUp() throws Exception {
 		rezo.sauvegarder();
 	}
-
-	public static Mot getWord(String mot) {
-		String path = "cache"+File.separator+mot+".txt";
-		Mot word = null;
-		if (Files.exists(Paths.get(path))) {
-			word = Mot.lire(path);
-		} else {
-			word = rezo.requete(mot);
-			if(word != null) {
-				Mot.Ecrire(word, path);
-			}
-		}
-		return word;
-	}
-
+	
 	@RequestMapping("/diko")
 	public static Mot request(@RequestParam(value="mot") String mot) {
-		return getWord(mot);
+		return rezo.requete(mot);
 	}
 
 	@RequestMapping("/diko/relation")
 	public static ArrayList<Voisin> requestRelation(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation) throws Exception {
-		return getWord(mot).getRelations_sortantes(relation);
+		return rezo.requete(mot).getRelations_sortantes(relation);
 	}
 
 	@RequestMapping("/diko/word")
@@ -114,16 +97,49 @@ public class RequestController {
 	}
 	
 	@RequestMapping("/diko/definition")
-	public static Object requestDescription(@RequestParam(value="mot") String mot) {
-		Mot word = getWord(mot);
+	public static ResultDefinition requestDescription(@RequestParam(value="mot") String mot) {
+		Mot word = rezo.requete(mot);
 		if (word != null) {
 			String def = word.getDefinition();
 			if (def.startsWith("Pas de définition")) {
-				return word.getRelations_sortantes("r_raff_sem");
+				return new ResultDefinition(false, word.getRelations_sortantes("r_raff_sem"));
 			} else {
-				return def;
+				return new ResultDefinition(true, def);
 			}
 		}
 		return null;
 	}
+	
+	
+	public static class ResultDefinition {
+		private boolean exist;
+		private Object value;
+		
+		public ResultDefinition() {
+			super();
+		}
+		
+		public ResultDefinition(boolean exist, Object value) {
+			super();
+			this.exist = exist;
+			this.value = value;
+		}
+		
+		public boolean isExist() {
+			return exist;
+		}
+		
+		public void setExist(boolean exist) {
+			this.exist = exist;
+		}
+		
+		public Object getValue() {
+			return value;
+		}
+		public void setValue(Object value) {
+			this.value = value;
+		}
+		
+	}
+	
 }
