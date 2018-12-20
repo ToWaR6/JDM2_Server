@@ -93,7 +93,11 @@ public class RequestController {
 				break;
 			}	
 		}
-		return list.subList(0, 25);
+		if (list.size() < 25) {
+			return list;
+		} else {
+			return list.subList(0, 25);
+		}
 	}
 	
 	@RequestMapping("/diko/definition")
@@ -102,24 +106,24 @@ public class RequestController {
 		if (word != null) {
 			String def = word.getDefinition();
 			if (def.startsWith("Pas de définition")) {
-				return new ResultDefinition(false, word.getRelations_sortantes("r_raff_sem"));
+				return new ResultDefinition<ArrayList<Voisin>>(false, word.getRelations_sortantes("r_raff_sem"));
 			} else {
-				return new ResultDefinition(true, def);
+				return new ResultDefinition<String>(true, def);
 			}
 		}
 		return null;
 	}
 	
 	
-	public static class ResultDefinition {
+	public static class ResultDefinition<T> {
 		private boolean exist;
-		private Object value;
+		private T value;
 		
 		public ResultDefinition() {
 			super();
 		}
 		
-		public ResultDefinition(boolean exist, Object value) {
+		public ResultDefinition(boolean exist, T value) {
 			super();
 			this.exist = exist;
 			this.value = value;
@@ -133,10 +137,10 @@ public class RequestController {
 			this.exist = exist;
 		}
 		
-		public Object getValue() {
+		public T getValue() {
 			return value;
 		}
-		public void setValue(Object value) {
+		public void setValue(T value) {
 			this.value = value;
 		}
 		
