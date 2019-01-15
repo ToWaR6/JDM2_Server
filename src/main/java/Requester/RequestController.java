@@ -80,6 +80,11 @@ public class RequestController {
 	public static ArrayList<Voisin> requestRelation(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation) throws Exception {
 		return rezo.requete(mot).getRelations_sortantes(relation);
 	}
+	
+	@RequestMapping("/diko/inverse")
+	public static ArrayList<Voisin> requestInverse(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation) throws Exception {
+		return rezo.requete(mot).getRelations_entrantes(relation);
+	}
 
 	@RequestMapping("/diko/word")
 	public static List<String> requestWord(@RequestParam(value="begin") String begin) throws Exception {
