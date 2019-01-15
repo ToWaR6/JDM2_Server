@@ -77,13 +77,14 @@ public class RequestController {
 	}
 
 	@RequestMapping("/diko/relation")
-	public static ArrayList<Voisin> requestRelation(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation) throws Exception {
-		return rezo.requete(mot).getRelations_sortantes(relation);
-	}
-	
-	@RequestMapping("/diko/inverse")
-	public static ArrayList<Voisin> requestInverse(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation) throws Exception {
-		return rezo.requete(mot).getRelations_entrantes(relation);
+	public static ArrayList<Voisin> requestRelation(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation, @RequestParam(required=false, defaultValue="sortante", value="type") String type) throws Exception {
+		if (type.equals("entrante")) {
+			return rezo.requete(mot).getRelations_entrantes(relation);
+		} else if (type.equals("sortante")) {
+			return rezo.requete(mot).getRelations_sortantes(relation);
+		} else {
+			return null;
+		}
 	}
 
 	@RequestMapping("/diko/word")
