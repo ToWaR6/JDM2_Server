@@ -15,8 +15,11 @@ import javax.annotation.PreDestroy;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.JsonSerializer;
 
 import requeterRezo.Mot;
 import requeterRezo.RequeterRezoDump;
@@ -29,7 +32,7 @@ public class RequestController {
 	private static String delais_peremption = "7j";
 	private static String taille_max = "100mo";
 	private static RequeterRezoDump rezo = new RequeterRezoDump(delais_peremption, taille_max);
-	private static HashMap<Character, TreeSet<String>> mapWord; 
+	private static HashMap<Character, TreeSet<String>> mapWord;
 
 
 	public RequestController() {
@@ -71,12 +74,12 @@ public class RequestController {
 		rezo.sauvegarder();
 	}
 	
-	@RequestMapping("/diko")
+	@RequestMapping(value="/diko")
 	public static Mot request(@RequestParam(value="mot") String mot) {
 		return rezo.requete(mot);
 	}
 
-	@RequestMapping("/diko/relation")
+	@RequestMapping(value="/diko/relation")
 	public static ArrayList<Voisin> requestRelation(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation, @RequestParam(required=false, defaultValue="sortante", value="type") String type) throws Exception {
 		if (type.equals("entrante")) {
 			return rezo.requete(mot).getRelations_entrantes(relation);
@@ -87,7 +90,7 @@ public class RequestController {
 		}
 	}
 
-	@RequestMapping("/diko/word")
+	@RequestMapping(value="/diko/word")
 	public static List<String> requestWord(@RequestParam(value="begin") String begin) throws Exception {
 		ArrayList<String> list = new ArrayList<String>();
 		boolean b = false;
@@ -106,8 +109,8 @@ public class RequestController {
 		}
 	}
 	
-	@RequestMapping("/diko/definition")
-	public static ResultDefinition requestDescription(@RequestParam(value="mot") String mot) {
+	@RequestMapping(value="/diko/definition")
+	public static ResultDefinition<?> requestDescription(@RequestParam(value="mot") String mot) {
 		Mot word = rezo.requete(mot);
 		if (word != null) {
 			String def = word.getDefinition();
