@@ -73,21 +73,18 @@ public class RequestController {
 	public static void cleanUp() throws Exception {
 		rezo.sauvegarder();
 	}
-	
-	@RequestMapping(value="/diko")
-	public static Mot request(@RequestParam(value="mot") String mot) {
-		return rezo.requete(mot);
-	}
 
 	@RequestMapping(value="/diko/relation")
 	public static ArrayList<Voisin> requestRelation(@RequestParam(value="mot") String mot, @RequestParam(value="relation") String relation, @RequestParam(required=false, defaultValue="sortante", value="type") String type) throws Exception {
-		if (type.equals("entrante")) {
-			return rezo.requete(mot).getRelations_entrantes(relation);
-		} else if (type.equals("sortante")) {
-			return rezo.requete(mot).getRelations_sortantes(relation);
-		} else {
-			return null;
+		Mot m = rezo.requete(mot);
+		if (m != null) {
+			if (type.equals("entrante")) {
+				return m.getRelations_entrantes(relation);
+			} else if (type.equals("sortante")) {
+				return m.getRelations_sortantes(relation);
+			}
 		}
+		return null;
 	}
 
 	@RequestMapping(value="/diko/word")
